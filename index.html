@@ -11,10 +11,11 @@
   </style>
 </head>
 <body>
+  <!--
   <h1>Page 2</h1>
   <img id="pictureUrl">
   <button id="btnLogIn" onclick="logIn()">Log In</button>
-  <button id="btnLogOut" onclick="logOut()">Log Out</button>
+  <button id="btnLogOut" onclick="logOut()">Log Out</button> -->
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
   <script>
     function logOut() {
@@ -24,6 +25,12 @@
     function logIn() {
       liff.login({ redirectUri: window.location.href })
     }
+    function goToForm() {
+      const profile = await liff.getProfile();
+      window.location.replace(
+        "https://docs.google.com/forms/d/e/1FAIpQLSdVFg5Gay_R3mzEdtl_QaY1MdFcuRS-W4ldOpTcCDI7N2V69w/viewform?usp=pp_url&entry.1706162964=${profile.userId}&entry.564840410=${profile.displayName}&entry.2031236677=${profile.pictureUrl}&entry.674642339=${profile.statusMessage}"
+      );
+    }
     async function getUserProfile() {
       const profile = await liff.getProfile()
       document.getElementById("pictureUrl").style.display = "block"
@@ -32,13 +39,11 @@
     async function main() {
       await liff.init({ liffId: "1655031302-0NeE21Bm" })
       if (liff.isInClient()) {
-        getUserProfile()
+        goToForm();
+        //getUserProfile()
       } else {
         if (liff.isLoggedIn()) {
-          const profile = await liff.getProfile();
-          window.location.replace(
-            "https://docs.google.com/forms/d/e/1FAIpQLSdVFg5Gay_R3mzEdtl_QaY1MdFcuRS-W4ldOpTcCDI7N2V69w/viewform?usp=pp_url&entry.1706162964=${profile.userId}&entry.564840410=${profile.displayName}&entry.2031236677=${profile.pictureUrl}&entry.674642339=${profile.statusMessage}"
-          );
+          goToForm();
           //document.getElementById("btnLogIn").style.display = "none"
           //document.getElementById("btnLogOut").style.display = "block"
         } else {
